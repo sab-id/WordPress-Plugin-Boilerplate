@@ -1,6 +1,13 @@
-# WordPress Plugin Boilerplate
+# WordPress Plugin Boilerplate Extended Madebyaris
 
 A standardized, organized, object-oriented foundation for building high-quality WordPress Plugins.
+
+This is a custom WPPB from the original.
+
+New feature:
+- Use modern stack (Gulp, Browsersync, for the frontend)
+- composer integrated ( jjgrainger/wp-custom-post-type-class, soberwp/intervention, stoutlogic/acf-builder ) 
+
 
 ## Contents
 

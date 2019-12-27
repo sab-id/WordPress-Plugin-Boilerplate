@@ -112,15 +112,24 @@ class Plugin_Name {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-name-i18n.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-name-admin.php';
+		 * This where all the composer thing will load.
+		 */ 
+		include PLUGIN_NAME_DIR . 'vendor/autoload.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
+		 * All the admin, gears, and public classes will be automaticly load
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-name-public.php';
+		foreach ( glob( PLUGIN_NAME_DIR . 'admin/class-*.php' ) as $filename ) {
+			require_once $filename;
+		}
+
+		foreach ( glob( PLUGIN_NAME_DIR . 'includes/*/class-*.php' ) as $filename ) {
+			require_once $filename;
+		}
+
+		foreach ( glob( PLUGIN_NAME_DIR . 'public/class-*.php' ) as $filename ) {
+			require_once $filename;
+		}
 
 		$this->loader = new Plugin_Name_Loader();
 

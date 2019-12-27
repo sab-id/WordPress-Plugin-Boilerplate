@@ -1,0 +1,15 @@
+{
+    "name": "Plugin_Name",
+    "description": "Plugin Description",
+    "authors": [
+        {
+            "name": "M Aris Setiawan",
+            "email": "arissetia.m@gmail.com"
+        }
+    ],
+    "require": {
+        "jjgrainger/wp-custom-post-type-class": "^1.4",
+        "soberwp/intervention": "^1.2",
+        "stoutlogic/acf-builder": "^1.8"
+    }
+}
