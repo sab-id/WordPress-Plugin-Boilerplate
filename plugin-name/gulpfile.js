@@ -1,5 +1,5 @@
 //defining base path
-var basePaths = {
+const basePaths = {
 	node: './node_modules/',
 	scss_admin: './admin/css/sass/',
 	scss_public: './public/css/sass/',
@@ -10,16 +10,16 @@ var basePaths = {
 };
 
 // Defining requirements
-var gulp        = require('gulp');
-var concat      = require('gulp-concat');
-var sass        = require('gulp-sass');
-var cleanCSS	= require('gulp-clean-css');
-var sourcemaps	= require('gulp-sourcemaps');
-var minify		= require('gulp-minify');
-var browsersync = require('browser-sync');
+const { src, dest, parallel} = require('gulp');
+const concat      = require('gulp-concat');
+const sass        = require('gulp-sass');
+const cleanCSS	= require('gulp-clean-css');
+const sourcemaps	= require('gulp-sourcemaps');
+const minify		= require('gulp-minify');
+const browsersync = require('browser-sync');
 
 // browser-sync watched files
-var browserSyncWatchFiles = [
+const browserSyncWatchFiles = [
     basePaths.distAssets_admin +'css/*.css',
 	basePaths.distAssets_admin +'js/*.js',
 	basePaths.distAssets_public +'css/*.css',
@@ -29,8 +29,8 @@ var browserSyncWatchFiles = [
 // browser-sync options
 
 // Convert sass to css for admin side
-gulp.task('styles-admin', function (){
-	return gulp.src([
+function StylesAdmin (){
+	return src([
 		basePaths.scss_admin + '*.scss'
 		])
 	.pipe( sass( {style: 'compressed'} ).on('error', sass.logError) )
@@ -38,12 +38,12 @@ gulp.task('styles-admin', function (){
 		console.log(details.name + ': ' + (details.stats.originalSize / 1000) + 'KB' );
 		console.log(details.name + ': ' + (details.stats.minifiedSize / 1000) + 'KB' );
 	}))
-	.pipe( gulp.dest( basePaths.distAssets_admin + 'css/' ) );
-});
+	.pipe( dest( basePaths.distAssets_admin + 'css/' ) );
+};
 
 // Convert sass to css for admin side
-gulp.task('styles-public', function (){
-	return gulp.src([
+function StyelPublic (){
+	return src([
 		basePaths.scss_public + '*.scss'
 		])
 	.pipe( sass( {style: 'compressed'} ).on('error', sass.logError) )
@@ -51,37 +51,34 @@ gulp.task('styles-public', function (){
 		console.log(details.name + ': ' + (details.stats.originalSize / 1000) + 'KB' );
 		console.log(details.name + ': ' + (details.stats.minifiedSize / 1000) + 'KB' );
 	}))
-	.pipe( gulp.dest( basePaths.distAssets_public + 'css/' ) );
-});
+	.pipe( dest( basePaths.distAssets_public + 'css/' ) );
+};
 
 
 // minify javascript for admin side
-gulp.task('scripts-admin', function( ){
-	return gulp.src([
+function ScriptAdmin(){
+	return src([
 		basePaths.scripts_admin + '*.js'
 	])
 	.pipe( minify() )
-	.pipe( gulp.dest( basePaths.distAssets_admin + 'js/'  ) );
-});
+	.pipe( dest( basePaths.distAssets_admin + 'js/'  ) );
+};
 
 // minify javascript for public side
-gulp.task('scripts-public', function( ){
-	return gulp.src([
+function ScriptPublic( ){
+	return src([
 		basePaths.scripts_public + '*.js'
 	])
 	.pipe( minify() )
-	.pipe( gulp.dest( basePaths.distAssets_public + 'js/'  ) );
-});
+	.pipe( dest( basePaths.distAssets_public + 'js/'  ) );
+};
 
+exports.styeladmin = StylesAdmin;
+exports.stylepublic = StyelPublic;
+exports.scriptadmin = ScriptAdmin;
+exports.scriptpublic = ScriptPublic;
 
-gulp.task('styles', ['styles-admin', 'styles-public'], function () { });
-gulp.task('scripts', ['scripts-admin', 'scripts-public'], function () { });
+exports.styles = parallel( this.styeladmin, this.stylepublic );
+exports.scripts = parallel( this.scriptadmin, this.scriptpublic );
 
-
-gulp.task('watch', function () {
-	gulp.watch( basePaths.scss_admin + '*.scss', ['styles-admin'] );
-	gulp.watch( basePaths.scss_public + '*.scss', ['styles-public'] );
-
-	gulp.watch( basePaths.scripts_admin + '*.js', ['scripts-admin']);
-	gulp.watch( basePaths.scripts_public + '*.js', ['scripts-public']);
-});
+exports.default = parallel( this.styles, this.scripts );
