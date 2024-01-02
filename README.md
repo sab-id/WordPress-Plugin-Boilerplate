@@ -1,4 +1,4 @@
-# WordPress Plugin Boilerplate Extended Madebyaris
+# WordPress Plugin Boilerplate Extended SAB.ID
 
 A standardized, organized, object-oriented foundation for building high-quality WordPress Plugins.
 
